@@ -10,20 +10,23 @@ import {
   Post,
 } from '@nestjs/common';
 import { ClasesService } from './clases.service';
-import type { CrearClaseDto } from './dto/crear-clase.dto';
+import { CrearClaseDto } from './dto/crear-clase.dto';
 import type { ActualizarClaseDto } from './dto/actualizar-clase.dto';
+import { Publico } from '../auth/decoradores/publico.decorator';
 
 @Controller('clases')
 export class ClasesController {
   constructor(private readonly clasesService: ClasesService) {}
 
   /** GET /clases */
+  @Publico() // el catalogo lo ve cualquiera, sin cuenta
   @Get()
   listar() {
     return this.clasesService.listar();
   }
 
   /** GET /clases/2 */
+  @Publico()
   @Get(':id')
   async buscar(@Param('id') id: string) {
     const clase = await this.clasesService.buscar(Number(id));
